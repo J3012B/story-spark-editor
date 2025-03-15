@@ -1,9 +1,8 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import Navbar from "@/components/Navbar";
 import Index from "./pages/Index";
@@ -15,9 +14,18 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+// This declaration is compatible with the one in vite-env.d.ts
 declare global {
   interface Window {
-    google: any;
+    google?: {
+      accounts: {
+        oauth2: {
+          initTokenClient: (config: any) => {
+            requestAccessToken: () => void;
+          };
+        };
+      };
+    };
   }
 }
 
@@ -27,7 +35,7 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
+        <HashRouter>
           <div className="min-h-screen flex flex-col">
             <Navbar />
             <main className="flex-1">
@@ -41,7 +49,7 @@ const App = () => (
               </Routes>
             </main>
           </div>
-        </BrowserRouter>
+        </HashRouter>
       </TooltipProvider>
     </AuthProvider>
   </QueryClientProvider>
