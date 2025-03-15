@@ -1,11 +1,31 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Sparkles } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 const Index = () => {
+  const { user, isLoading } = useAuth();
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    if (!isLoading) {
+      if (user) {
+        navigate("/documents");
+      } else {
+        navigate("/login");
+      }
+    }
+  }, [user, isLoading, navigate]);
+  
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="flex flex-col items-center animate-fade-in">
+        <div className="story-editor-gradient p-6 rounded-full mb-4">
+          <Sparkles className="h-12 w-12 text-white animate-bounce-slow" />
+        </div>
+        <h1 className="text-3xl font-bold mb-2">Story Spark Editor</h1>
+        <p className="text-muted-foreground">Redirecting you to the right place...</p>
       </div>
     </div>
   );
